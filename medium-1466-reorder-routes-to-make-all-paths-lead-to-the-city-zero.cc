@@ -40,3 +40,92 @@ public:
         return count;
     }
 };
+✅ C++ Code (Less Memory):
+#include <vector>
+using namespace std;
+
+class Solution {
+public:
+    int minReorder(int n, vector<vector<int>>& connections) {
+        vector<vector<int>> adj(n);       // Undirected adjacency list
+        vector<vector<int>> directed(n);  // Original directed edges
+
+        for (auto& conn : connections) {
+            int from = conn[0], to = conn[1];
+            adj[from].push_back(to);
+            adj[to].push_back(from);
+            directed[from].push_back(to);  // Only store original direction
+        }
+
+        vector<bool> visited(n, false);
+        int count = 0;
+
+        // DFS
+        function<void(int)> dfs = [&](int node) {
+            visited[node] = true;
+            for (int neighbor : adj[node]) {
+                if (!visited[neighbor]) {
+                    // If the original edge goes from node -> neighbor, it needs reversal
+                    for (int to : directed[node]) {
+                        if (to == neighbor) {
+                            count++;
+                            break;
+                        }
+                    }
+                    dfs(neighbor);
+                }
+            }
+        };
+
+        dfs(0);
+        return count;
+    }
+};
+✅ C++ Code (BFS, Low Memory):
+#include <vector>
+#include <queue>
+using namespace std;
+
+class Solution {
+public:
+    int minReorder(int n, vector<vector<int>>& connections) {
+        vector<vector<int>> adj(n);       // Undirected graph
+        vector<vector<int>> directed(n);  // Tracks original direction: from -> to
+
+        // Build graphs
+        for (auto& conn : connections) {
+            int from = conn[0], to = conn[1];
+            adj[from].push_back(to);
+            adj[to].push_back(from);
+            directed[from].push_back(to);  // Store only one-way (from → to)
+        }
+
+        vector<bool> visited(n, false);
+        queue<int> q;
+        int count = 0;
+
+        q.push(0);
+        visited[0] = true;
+
+        while (!q.empty()) {
+            int node = q.front();
+            q.pop();
+
+            for (int neighbor : adj[node]) {
+                if (!visited[neighbor]) {
+                    // Check if the edge is originally from node → neighbor
+                    for (int to : directed[node]) {
+                        if (to == neighbor) {
+                            count++;
+                            break;
+                        }
+                    }
+                    visited[neighbor] = true;
+                    q.push(neighbor);
+                }
+            }
+        }
+
+        return count;
+    }
+};
