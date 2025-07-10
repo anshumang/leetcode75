@@ -37,11 +37,11 @@ Use the fact that:
 
 * `i >> 1` is `i / 2` (dropping the last bit),
 * So:
-
+```
   $$
   \text{countBits}[i] = \text{countBits}[i >> 1] + (i \& 1)
   $$
-
+```
 ---
 
 ### ✅ C++ Solution
