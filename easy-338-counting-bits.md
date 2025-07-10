@@ -1,5 +1,6 @@
 The problem [**Counting Bits**](https://leetcode.com/problems/counting-bits/description/) requires you to count the number of `1`s (set bits) in the binary representation of each number from `0` to `n`.
 
+Jul 19, 2018
 ---
 
 ### 🔹 Problem Summary
